@@ -1,0 +1,11 @@
+# 编译产物
+build/
+*.exe
+
+# IDE配置
+.vscode/
+.idea/
+
+# 系统文件
+Thumbs.db
+.DS_Store
