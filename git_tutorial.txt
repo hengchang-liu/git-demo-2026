@@ -198,10 +198,70 @@ Git会在文件里标出来:
 ⚠️ 文件已经被Git跟踪后再写进.gitignore无效, 要先git rm --cached
 
 ============================================================
+第10步: GitHub远程 (push上传)
+============================================================
+概念:
+  本地commit存在你电脑上, push传到GitHub云端备份+协作
+  git push    = 上传本地commit到远程
+  git pull    = 下载远程最新改动到本地
+
+【步骤】
+1. 先在GitHub网页上建一个空仓库:
+   - 点右上角 + -> New repository
+   - 名字随便(比如 git-demo)
+   - 不要勾选 README/.gitignore(本地已经有了)
+   - Create repository
+
+2. 本地连远程:
+   git remote add origin https://github.com/hengchang-liu/git-demo-2026.git
+   (地址在GitHub建完仓库页面能看到, 复制HTTPS那个)
+   origin = 远程仓库的外号, 默认都叫这个
+
+3. 第一次push:
+   git push -u origin master
+   (-u = 记住远程地址, 以后直接git push就行)
+   第一次会弹GitHub登录, 浏览器授权即可
+
+4. 以后改完代码:
+   git add .
+   git commit -m "说明"
+   git push
+
+【常用远程命令】
+  git remote -v           看连了哪些远程
+  git remote remove origin  断开远程连接
+  git pull                拉取远程最新代码
+  git clone 地址          第一次下载整个仓库到本地
+
+【PR 合并请求】
+  你push了自己的分支 feature/xxx
+  在GitHub网页点 New Pull Request
+  选: 从 feature/xxx 合并到 main
+  同事review通过后点Merge
+  -> 不能直接push到main! 必须走PR审批
+
+【日常工作流程】
+  第一次: git clone 地址
+  以后每天:
+    git pull                    ← 先拉最新
+    git checkout -b feature/xxx ← 开新分支
+    改代码
+    git add .
+    git commit -m "说明"
+    git push                    ← 上传你的分支
+    网页提PR, 等合并
+
+【注意】
+  第一次push会弹GitHub登录, 用浏览器登录授权就行
+  已经push到远程的分支, 别用reset --hard! 用revert
+
+
+============================================================
 常用命令速查
 ============================================================
   git status              看当前状态
   git add 文件             暂存改动
+  git add .               暂存所有改动
   git commit -m "说明"    存档
   git log                 看历史
   git log --oneline       简洁历史
@@ -214,6 +274,9 @@ Git会在文件里标出来:
   git restore --staged 文件  取消add
   git revert 哈希         撤销某次提交
   git reset --hard 哈希   强制回退(慎用)
+  git clone 地址          下载远程仓库
+  git pull                拉取远程最新
+  git push                上传到远程
 
 ============================================================
 常见坑
