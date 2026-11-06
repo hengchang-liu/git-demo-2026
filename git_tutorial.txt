@@ -1,0 +1,63 @@
+# Git 入门实操笔记（51.2）
+# 星级: ⭐⭐⭐  入职天天用
+#
+# ==================== 准备 ====================
+# 装完 Git for Windows 后, 新开一个 PowerShell 窗口, 输入:
+#   git --version
+# 能显示版本号就说明装好了
+#
+# ==================== 第1步: 配置身份 ====================
+# 干啥: 每次commit存档, Git要记"这是谁存的"
+# 注意: 不是链接GitHub! 只是本地记录, 随便填
+# 只需要配一次, 以后所有仓库都用这个身份:
+
+git config --global user.name "你的名字"
+git config --global user.email "你的邮箱"
+
+# 检查配好了没:
+git config --global --list
+
+# ==================== 第2步: 建仓库 ====================
+# 进到你想被Git管的文件夹:
+cd "C:\Users\33536\OneDrive\C++\The-C-20-Masterclass-Source-Code-main\The-C-20-Masterclass-Source-Code-main\51.CMakeGit\51.2Git"
+
+# git init = 把这个文件夹变成Git仓库
+# 会自动建一个隐藏的 .git/ 文件夹, Git的所有历史记录都存在这
+git init
+
+# ==================== 第3步: 第一个存档 ====================
+# 1. 先写个文件(README.md), 比如:
+#    # My Repo
+#    Learning Git.
+
+# 2. git status 看Git发现了啥新文件:
+git status
+
+# 3. git add 把文件放进"暂存区"(购物车):
+git add README.md
+
+# 4. git status 再看, 文件变成"待提交"状态:
+git status
+
+# 5. git commit 真正存档, -m 后面写说明:
+git commit -m "first commit: add README"
+
+# 6. git log 看历史记录:
+git log
+
+# ==================== 核心概念 ====================
+# 三个区:
+#   工作区 = 你现在看到的文件夹(改文件Git不知道)
+#   暂存区 = git add 之后, 挑哪些改动要存档
+#   仓库   = git commit 之后, 永久存档在 .git/ 里
+#
+# 类比:
+#   add = 把东西放购物车
+#   commit = 结账, 永久记录
+#
+# 常用命令:
+#   git status    看当前状态(改了啥, 啥没add)
+#   git add 文件   暂存改动
+#   git commit -m "说明"  存档
+#   git log       看历史
+#   git diff      看具体改了哪几行
