@@ -6,10 +6,12 @@ Git 入门实操笔记（51.2）
 【核心概念】
 Git = 代码版本管理, 自动记录每次存档, 改坏了能回退
 仓库(repository) = 被Git管起来的文件夹, 里面有隐藏的 .git/
+
 三个区:
   工作区  = 你现在看到的文件(改了Git不知道)
   暂存区  = git add 之后, 挑哪些改动要存档(购物车)
   仓库    = git commit 之后, 永久存在 .git/ 里
+
 类比: add=放购物车, commit=结账存档
 
 ⚠️ 重要区分:
@@ -76,43 +78,44 @@ Git = 代码版本管理, 自动记录每次存档, 改坏了能回退
 第5步: 分支 branch(重点)
 ============================================================
 概念:
-  master  = 主分支(正式版)
-  feature = 开个平行副本试新东西, 不影响master
-  merge   = 改好了合并回master
+  master/main = 主分支(正式版)
+  feature     = 开个平行副本试新东西, 不影响主分支
+  merge       = 改好了合并回主分支
 
-1. 看当前分支:
+【5.1 建分支并切过去(一步法, 常用)】
+  git checkout -b feature/xxx
+  (-b = 建branch并直接切过去)
+
+【5.2 也可以分两步】
+  git branch feature/xxx      ← 建分支
+  git checkout feature/xxx    ← 切过去
+
+【5.3 看当前分支】
   git branch
-  -> * master 表示在master上
+  -> * feature/xxx 表示在这个分支上
+  -> master 表示主分支
 
-2. 开新分支:
-  git branch feature
-
-3. 切到新分支:
-  git checkout feature
-  -> * feature 表示现在在feature上
-
-4. 在feature上改README加一行 "on feature branch":
-  git add README.md
+【5.4 在feature上改代码】
+  git add .
   git commit -m "add line on feature branch"
 
-5. 切回master:
+【5.5 切回主分支】
   git checkout master
   -> 打开README, 刚才那行没了! 因为那是feature分支上的改动
 
-6. 把feature合并回master:
-  git merge feature
+【5.6 把feature合并回主分支】
+  git merge feature/xxx
   -> 再打开README, 改动回来了
 
-7. 删分支(合并完就可以删了):
-  git branch -d feature
-
-实际工作: 每个人/每个功能开个分支, 改完提PR合并回main
+【5.7 删分支(合并完就可以删了)】
+  git branch -d feature/xxx
 
 【branch命名规范】
   feature/xxx = 新功能分支(斜杠是命名规范, 不是文件夹)
   bugfix/xxx  = 修bug分支
   斜杠只是方便分类, 不是真的有feature文件夹
-  git checkout -b 名字 = 建branch并直接切过去, 一步搞定
+
+实际工作: 每个人/每个功能开个分支, 改完提PR合并回main
 
 ============================================================
 第6步: 版本回退(三个命令区别, 重点!)
@@ -200,6 +203,7 @@ Git会在文件里标出来:
   .vscode/
   .idea/
   Thumbs.db
+  .DS_Store
 
 ⚠️ 文件已经被Git跟踪后再写进.gitignore无效, 要先git rm --cached
 
@@ -210,43 +214,37 @@ Git会在文件里标出来:
   本地commit存在你电脑上, push传到GitHub云端备份+协作
   git push    = 上传本地commit到远程
   git pull    = 下载远程最新改动到本地
+  git clone   = 第一次下载整个仓库到本地
 
-【步骤】
-1. 先在GitHub网页上建一个空仓库:
-   - 点右上角 + -> New repository
-   - 名字随便(比如 git-demo)
-   - 不要勾选 README/.gitignore(本地已经有了)
-   - Create repository
+【10.1 在GitHub网页上建空仓库】
+  - 点右上角 + -> New repository
+  - 名字随便(比如 git-demo)
+  - 本地已经有文件了, 不要勾选 README/.gitignore/license
+  - Create repository
 
-2. 本地连远程:
-   git remote add origin https://github.com/hengchang-liu/git-demo-2026.git
-   (地址在GitHub建完仓库页面能看到, 复制HTTPS那个)
-   origin = 远程仓库的外号, 默认都叫这个
+【10.2 本地连远程】
+  git remote add origin https://github.com/hengchang-liu/git-demo-2026.git
+  (地址在GitHub建完仓库页面能看到, 复制HTTPS那个)
+  origin = 远程仓库的外号, 默认都叫这个
 
-3. 第一次push:
-   git push -u origin master
-   (-u = 记住远程地址, 以后直接git push就行)
-   第一次会弹GitHub登录, 浏览器授权即可
+【10.3 第一次push】
+  git push -u origin master
+  (-u = 记住远程地址, 以后直接git push就行)
+  第一次会弹GitHub登录, 浏览器授权即可
 
-4. 以后改完代码:
-   git add .
-   git commit -m "说明"
-   git push
+【10.4 以后改完代码】
+  git add .
+  git commit -m "说明"
+  git push
 
-【常用远程命令】
-  git remote -v           看连了哪些远程
-  git remote remove origin  断开远程连接
-  git pull                拉取远程最新代码
-  git clone 地址          第一次下载整个仓库到本地
-
-【PR 合并请求】
+【10.5 PR 合并请求】
   你push了自己的分支 feature/xxx
   在GitHub网页点 New Pull Request
   选: 从 feature/xxx 合并到 main
   同事review通过后点Merge
   -> 不能直接push到main! 必须走PR审批
 
-【日常工作流程】
+【10.6 日常工作流程】
   第一次: git clone 地址
   以后每天:
     git pull                    ← 先拉最新
@@ -257,24 +255,29 @@ Git会在文件里标出来:
     git push                    ← 上传你的分支
     网页提PR, 等合并
 
-【注意】
-  第一次push会弹GitHub登录, 用浏览器登录授权就行
-  已经push到远程的分支, 别用reset --hard! 用revert
+【常用远程命令】
+  git remote -v             看连了哪些远程
+  git remote remove origin  断开远程连接
+  git pull                  拉取远程最新代码
+  git clone 地址            下载整个仓库
 
+【注意】
+  已经push到远程的分支, 别用reset --hard! 用revert
 
 ============================================================
 常用命令速查
 ============================================================
   git status              看当前状态
-  git add 文件             暂存改动
+  git add 文件             暂存单个文件
   git add .               暂存所有改动
   git commit -m "说明"    存档
   git log                 看历史
   git log --oneline       简洁历史
   git diff                看具体改了哪几行
   git branch              看所有分支
-  git branch 名字         开分支
+  git branch 名字         建分支
   git checkout 名字       切分支
+  git checkout -b 名字    建分支并切过去
   git merge 分支名        合并分支
   git restore 文件        放弃未commit的改动
   git restore --staged 文件  取消add
@@ -295,3 +298,4 @@ Git会在文件里标出来:
 - git log输出太长会进less分页器, 按 q 退出; 用 git log --oneline 不会卡
 - git restore会丢掉未commit的修改! 想留住的内容必须先commit
 - 只Ctrl+S不commit = 草稿, Git不认作存档
+- 本地已有文件时, GitHub建仓库别勾README/.gitignore, 会冲突
